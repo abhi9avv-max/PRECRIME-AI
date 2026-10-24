@@ -1,17 +1,20 @@
 # PRECRIME AI - Progress Log
 
-## Phase B: API, State Machine & Persistence (Completed)
+## Phase C: Frontend Scaffold & Four Screens (Completed)
 - **Done**:
-  - Implemented SQLite database schema with SQLAlchemy models: `investigations`, `scenarios`, `test_runs`, `evidence_records`, `stage_results`, `diagnoses`, `remediation_actions`, `audit_events`, `evaluation_results`.
-  - Implemented sensitive key redaction utility in `app/redaction.py`.
-  - Implemented synthetic demo adapter in `app/adapters/demo.py` (labels all records SYNTHETIC, never exposes ground truth).
-  - Implemented read-only Wazuh connection tester in `app/adapters/wazuh.py` with TLS verification and audit logging.
-  - Implemented evaluation batch runner in `app/evaluation/evaluator.py` and empirical metrics generator in `app/evaluation/metrics.py`.
-  - Implemented FastAPI routers for investigations, test runs, human review / remediation approval state machine, scenarios listing (no ground truth), evaluation batch trigger, metrics, and report export (JSON/Markdown).
-  - Verified 19 backend tests in 1.11s: state machine transitions, 409 enforcement, ground truth separation, metrics correctness, error handling with audit event persistence, and redaction.
+  - Initialized React 18 + TypeScript + Vite + Tailwind CSS frontend architecture.
+  - Implemented typed API client connecting to `/api` proxy.
+  - Created reusable UI components: `Header` (inline SVG mark + tagline + source badge), `StatusBadge` (icon + text for PASS, FAIL, UNKNOWN, NOT REACHED), `ProgressIndicator` (4 steps), `MetricsPanel` (empirical metrics from DB rows + empty state + validation runner), `EvidenceModal` (raw checkpoint inspection + cryptographic hashes), and `WazuhModal` (live connection check with fallback to demo).
+  - Implemented Screen 1 (`NewInvestigation.tsx`): Prominent "Start Investigation" action, scenario family picker with variant selector (Dev vs Held-Out), data source switcher, past investigations table with empty state prompt, and MetricsPanel.
+  - Implemented Screen 2 (`PipelineTrace.tsx`): 6-stage pipeline trace (desktop horizontal, mobile vertical), StatusBadge per node, one-line evidence reasons, evidence count, and drill-down modal.
+  - Implemented Screen 3 (`DiagnosisFix.tsx`): Deterministic root-cause finding, clickable evidence refs, explicit limitations ("What is unknown"), simulated remediation proposal, analyst review form, and gated approval (Approve button disabled until review ACCEPT is recorded).
+  - Implemented Screen 4 (`RetestReport.tsx`): "Run Retest" action, RC1..RC5 automated recovery checklist, before/after stage comparison table, JSON and Markdown report export, and MetricsPanel.
+  - Verified 5 Vitest tests and production TypeScript build (`tsc && vite build`).
 - **Next**:
-  - Phase C: Frontend scaffold (React + TypeScript + Vite + Tailwind + shadcn/ui minimal components), 4 screens wired to real backend endpoints, StatusBadge, MetricsPanel, report download, and Vitest suite.
+  - Phase D: Full end-to-end journey execution, verification of all error states, and acceptance criteria audit.
 - **Exact Run Commands**:
   - `cd backend; python -m pytest tests/ -q`
+  - `cd frontend; npm test`
+  - `cd frontend; npm run build`
 - **Known Issues**:
   - None.
