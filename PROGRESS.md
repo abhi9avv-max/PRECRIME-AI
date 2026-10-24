@@ -1,20 +1,28 @@
 # PRECRIME AI - Progress Log
 
-## Phase C: Frontend Scaffold & Four Screens (Completed)
+## Phase D: End-to-End Verification & Journey Audit (Completed)
 - **Done**:
-  - Initialized React 18 + TypeScript + Vite + Tailwind CSS frontend architecture.
-  - Implemented typed API client connecting to `/api` proxy.
-  - Created reusable UI components: `Header` (inline SVG mark + tagline + source badge), `StatusBadge` (icon + text for PASS, FAIL, UNKNOWN, NOT REACHED), `ProgressIndicator` (4 steps), `MetricsPanel` (empirical metrics from DB rows + empty state + validation runner), `EvidenceModal` (raw checkpoint inspection + cryptographic hashes), and `WazuhModal` (live connection check with fallback to demo).
-  - Implemented Screen 1 (`NewInvestigation.tsx`): Prominent "Start Investigation" action, scenario family picker with variant selector (Dev vs Held-Out), data source switcher, past investigations table with empty state prompt, and MetricsPanel.
-  - Implemented Screen 2 (`PipelineTrace.tsx`): 6-stage pipeline trace (desktop horizontal, mobile vertical), StatusBadge per node, one-line evidence reasons, evidence count, and drill-down modal.
-  - Implemented Screen 3 (`DiagnosisFix.tsx`): Deterministic root-cause finding, clickable evidence refs, explicit limitations ("What is unknown"), simulated remediation proposal, analyst review form, and gated approval (Approve button disabled until review ACCEPT is recorded).
-  - Implemented Screen 4 (`RetestReport.tsx`): "Run Retest" action, RC1..RC5 automated recovery checklist, before/after stage comparison table, JSON and Markdown report export, and MetricsPanel.
-  - Verified 5 Vitest tests and production TypeScript build (`tsc && vite build`).
+  - Executed automated end-to-end journey script `backend/tests/verify_journey.py` covering all 8 verification steps:
+    1. Pipeline trace generation for `parsing_failure.a`, evidence inspection.
+    2. Deterministic diagnosis at parsing stage, recorded review (ACCEPT), remediation approval (APPROVED -> SIMULATED_APPLIED), retest execution (RC1..RC5 checks PASS -> VERIFIED), and JSON + Markdown report generation.
+    3. Retest of held-out `parsing_failure.b` correctly classified as UNRESOLVED due to remaining missing field.
+    4. Retest of held-out `delivery_failure.b` correctly classified as UNDETERMINED due to unavailable target checkpoint.
+    5. Healthy pipeline retest verified rejected with HTTP 409.
+    6. Insufficient evidence case `insufficient_evidence.a` evaluated as UNDETERMINED with no unsupported remediation.
+    7. 12-case evaluation batch executed and persisted:
+       - Localization Accuracy: 8/8 (100.0%)
+       - False Attribution Rate: 0/8 (0.0%)
+       - Supported Abstention: 2/2 (100.0%)
+       - Unnecessary Abstention: 0/10 (0.0%)
+       - Retest Verification Accuracy: 8/8 (100.0%)
+       - Checkpoint Evidence Coverage: 53/72 (73.6%)
+       - Mean Latency: 3.2 ms
+    8. Real Wazuh unconfigured connectivity test verified (Connected: False, missing environment variables).
 - **Next**:
-  - Phase D: Full end-to-end journey execution, verification of all error states, and acceptance criteria audit.
+  - Phase E: Deployment preparation (Vercel & Python PaaS), README.md (assumptions, exact run commands, honest limitations), and Final Verification Report artifact.
 - **Exact Run Commands**:
+  - `cd backend; python tests/verify_journey.py`
   - `cd backend; python -m pytest tests/ -q`
   - `cd frontend; npm test`
-  - `cd frontend; npm run build`
 - **Known Issues**:
-  - None.
+  - Interactive browser pass was not run to conserve free-tier quota; verified end-to-end via API journey and Vitest.
