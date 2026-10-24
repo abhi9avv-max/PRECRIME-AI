@@ -1,16 +1,16 @@
 # PRECRIME AI - Progress Log
 
-## Phase A: Engine, Scenarios & Recovery (Completed)
+## Phase B: API, State Machine & Persistence (Completed)
 - **Done**:
-  - Implemented generic pipeline stages, statuses, and domain types in `app/diagnostics/stages.py`.
-  - Implemented deterministic diagnostic engine `app/diagnostics/engine.py` obeying all 4 pipeline steps, prerequisite checks, and cross-stage conflict resolution.
-  - Implemented simulated remediation generator in `app/diagnostics/remediation.py`.
-  - Implemented recovery checks (RC1..RC5) in `app/diagnostics/recovery.py` with content hash verification.
-  - Built compact 12 scenario cases (6 dev + 6 held-out) in `app/scenarios/fixtures.py`.
-  - Defined ground truth exclusively in `app/evaluation/ground_truth.py`.
-  - Built and verified engine tests (11 tests passed in 0.05s) covering all 12 cases, hand-built generalization, static purity, and mutation recovery tests.
+  - Implemented SQLite database schema with SQLAlchemy models: `investigations`, `scenarios`, `test_runs`, `evidence_records`, `stage_results`, `diagnoses`, `remediation_actions`, `audit_events`, `evaluation_results`.
+  - Implemented sensitive key redaction utility in `app/redaction.py`.
+  - Implemented synthetic demo adapter in `app/adapters/demo.py` (labels all records SYNTHETIC, never exposes ground truth).
+  - Implemented read-only Wazuh connection tester in `app/adapters/wazuh.py` with TLS verification and audit logging.
+  - Implemented evaluation batch runner in `app/evaluation/evaluator.py` and empirical metrics generator in `app/evaluation/metrics.py`.
+  - Implemented FastAPI routers for investigations, test runs, human review / remediation approval state machine, scenarios listing (no ground truth), evaluation batch trigger, metrics, and report export (JSON/Markdown).
+  - Verified 19 backend tests in 1.11s: state machine transitions, 409 enforcement, ground truth separation, metrics correctness, error handling with audit event persistence, and redaction.
 - **Next**:
-  - Phase B: SQLAlchemy models, SQLite persistence, FastAPI routers, audit trail, evaluator, metrics, and API integration tests.
+  - Phase C: Frontend scaffold (React + TypeScript + Vite + Tailwind + shadcn/ui minimal components), 4 screens wired to real backend endpoints, StatusBadge, MetricsPanel, report download, and Vitest suite.
 - **Exact Run Commands**:
   - `cd backend; python -m pytest tests/ -q`
 - **Known Issues**:
