@@ -1,28 +1,16 @@
 # PRECRIME AI - Progress Log
 
-## Phase D: End-to-End Verification & Journey Audit (Completed)
+## Phase E: Documentation, Deployment Preparation & Final Report (Completed)
 - **Done**:
-  - Executed automated end-to-end journey script `backend/tests/verify_journey.py` covering all 8 verification steps:
-    1. Pipeline trace generation for `parsing_failure.a`, evidence inspection.
-    2. Deterministic diagnosis at parsing stage, recorded review (ACCEPT), remediation approval (APPROVED -> SIMULATED_APPLIED), retest execution (RC1..RC5 checks PASS -> VERIFIED), and JSON + Markdown report generation.
-    3. Retest of held-out `parsing_failure.b` correctly classified as UNRESOLVED due to remaining missing field.
-    4. Retest of held-out `delivery_failure.b` correctly classified as UNDETERMINED due to unavailable target checkpoint.
-    5. Healthy pipeline retest verified rejected with HTTP 409.
-    6. Insufficient evidence case `insufficient_evidence.a` evaluated as UNDETERMINED with no unsupported remediation.
-    7. 12-case evaluation batch executed and persisted:
-       - Localization Accuracy: 8/8 (100.0%)
-       - False Attribution Rate: 0/8 (0.0%)
-       - Supported Abstention: 2/2 (100.0%)
-       - Unnecessary Abstention: 0/10 (0.0%)
-       - Retest Verification Accuracy: 8/8 (100.0%)
-       - Checkpoint Evidence Coverage: 53/72 (73.6%)
-       - Mean Latency: 3.2 ms
-    8. Real Wazuh unconfigured connectivity test verified (Connected: False, missing environment variables).
+  - Authored comprehensive `README.md` covering system definition, architecture diagram, assumptions, exact PowerShell & bash run commands, walkthrough demo script (`parsing_failure.a`), and honest limitations.
+  - Authored deployment configuration with `frontend/vercel.json` SPA rewrites and documented stateless container support (`PERSISTENCE_MODE=ephemeral` and hosted Postgres).
+  - Authored final verification report artifact with pytest summaries (19 passed in 1.11s), Vitest summaries (5 passed in 3.00s), Vite production build (built in 4.34s), empirical metric table, and acceptance criteria audit table.
 - **Next**:
-  - Phase E: Deployment preparation (Vercel & Python PaaS), README.md (assumptions, exact run commands, honest limitations), and Final Verification Report artifact.
+  - Prototype complete and verified end-to-end. Ready for deployment and analyst demonstration.
 - **Exact Run Commands**:
   - `cd backend; python tests/verify_journey.py`
   - `cd backend; python -m pytest tests/ -q`
   - `cd frontend; npm test`
+  - `cd frontend; npm run build`
 - **Known Issues**:
-  - Interactive browser pass was not run to conserve free-tier quota; verified end-to-end via API journey and Vitest.
+  - Interactive browser pass was omitted to conserve free-tier quota; verified end-to-end via API journey and Vitest.
